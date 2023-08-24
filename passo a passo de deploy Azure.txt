@@ -10,7 +10,7 @@ Remove the public, routes, and view folder and create a folder in the root publi
 
 Now replace the path from public to public-flutter in app.js and debug the node application. You’ll see the flutter web app being deployed locally.
 
-alterar git para para aparecer no azure
+alterar git para para aparecer no azure 
 
 flutterwebapp1.azurewebsites.net
 
