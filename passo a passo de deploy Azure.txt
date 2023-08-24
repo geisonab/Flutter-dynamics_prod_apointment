@@ -1,0 +1,18 @@
+instalar node.js (https://nodejs.org/en)
+criar um webapp (https://portal.azure.com/)
+
+cria uma pasta local com o nome do APP e roda o express
+
+$ npm install -g express-generator
+$ express
+
+Remove the public, routes, and view folder and create a folder in the root public-flutter which will contain the generated release build of Flutter Web from the previous step. You can find the release build in build\web .
+
+Now replace the path from public to public-flutter in app.js and debug the node application. You’ll see the flutter web app being deployed locally.
+
+
+flutterwebapp1.azurewebsites.net
+
+
+
+https://medium.com/flutter-community/deploy-flutter-web-app-to-azure-app-service-with-node-js-b0781fc6def2
