@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'FlutterWebApp1'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_303E9F5141044686818DC0F4EB72FA24 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8B69445B534542B498E1B6A11367146E }}
           package: .
