@@ -80,21 +80,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<ProductionOrderModel> _productionOrders = kReleaseMode
+  List<ProductionOrderModel> productionOrders = kReleaseMode
       ? List<ProductionOrderModel>.empty()
       : ProductionOrdersMock.getProductionOrders();
 
   bool _showChart = false;
 
   List<ProductionOrderModel> get _recentTransactions {
-    return _productionOrders
+    return productionOrders
         .where((element) => element.date
             .isAfter(DateTime.now().subtract(const Duration(days: 7))))
         .toList();
   }
 
   _addTransaction(String order, double value, DateTime date) {
-    final newTransaction = ProductionOrderModel(
+    ProductionOrderModel newTransaction = ProductionOrderModel(
       id: Random().nextDouble().toString(),
       value: value,
       date: date,
@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     setState(() {
-      _productionOrders.add(newTransaction);
+      productionOrders.add(newTransaction);
     });
 
     Navigator.of(context).pop();
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _removeTransaction(String id) {
     setState(() {
-      _productionOrders.removeWhere((element) => element.id == id);
+      productionOrders.removeWhere((element) => element.id == id);
     });
   }
 
@@ -235,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (!_showChart || !isLandscape)
               SizedBox(
                 height: availableHeight * (!isLandscape ? 0.70 : 0.9),
-                child: ProductionOrderList(_productionOrders,
+                child: ProductionOrderList(productionOrders,
                     onRevome: _removeTransaction),
               ),
           ],
