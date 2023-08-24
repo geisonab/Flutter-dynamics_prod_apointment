@@ -1,0 +1,5 @@
+copiar firebase cli pra raiz do projeto
+abrir o exe da cli do firebase
+firebase init hosting
+flutter build web
+firebase deploy --only hosting
