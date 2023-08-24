@@ -81,7 +81,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ProductionOrderModel> productionOrders = kReleaseMode
-      ? List<ProductionOrderModel>.empty()
+      ? List<ProductionOrderModel>.empty(growable: true)
       : ProductionOrdersMock.getProductionOrders();
 
   bool _showChart = false;
