@@ -205,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     super.initState();
     productionOrders = List<ProductionOrderModel>.empty(growable: true);
-    if (!kReleaseMode) {
+    if (kReleaseMode) {
       _repository.getProductionOrders().then(
         (value) {
           setState(() {
