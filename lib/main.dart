@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
-import 'dart:math';
 import 'package:dynamics_prod_apointment/Components/apointment_form.dart';
 import 'package:dynamics_prod_apointment/Components/chart.dart';
+import 'package:dynamics_prod_apointment/Data/productionorder_repository.dart';
 import 'package:dynamics_prod_apointment/utils/productionorders_mock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -80,11 +80,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<ProductionOrderModel> productionOrders = kReleaseMode
-      ? List<ProductionOrderModel>.empty(growable: true)
-      : ProductionOrdersMock.getProductionOrders();
+  ProductionOrderRepository _repository = ProductionOrderRepository();
+
+  late List<ProductionOrderModel> productionOrders;
 
   bool _showChart = false;
+  bool _pending = true;
+  bool _error = false;
 
   List<ProductionOrderModel> get _recentTransactions {
     return productionOrders
@@ -94,23 +96,51 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _addTransaction(String order, double value, DateTime date) {
+    setState(() {
+      _pending = true;
+    });
+
     ProductionOrderModel newTransaction = ProductionOrderModel(
-      id: Random().nextDouble().toString(),
+      id: 0,
       value: value,
       date: date,
       title: order,
     );
 
+    _repository.addProductionOrder(newTransaction).then((_) {
+      _repository.getProductionOrders().then(
+        (value) {
+          setState(() {
+            //productionOrders.add(newTransaction);
+            productionOrders = value;
+            _pending = false;
+          });
+        },
+      );
+    });
+
     setState(() {
-      productionOrders.add(newTransaction);
+      _pending = false;
     });
 
     Navigator.of(context).pop();
   }
 
-  _removeTransaction(String id) {
+  _removeTransaction(int id) {
     setState(() {
-      productionOrders.removeWhere((element) => element.id == id);
+      _pending = true;
+    });
+
+    _repository.removeProductionOrder(id).then((_) {
+      _repository.getProductionOrders().then(
+        (value) {
+          setState(() {
+            //productionOrders.add(newTransaction);
+            productionOrders = value;
+            _pending = false;
+          });
+        },
+      );
     });
   }
 
@@ -172,6 +202,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  initState() {
+    super.initState();
+    productionOrders = List<ProductionOrderModel>.empty(growable: true);
+    if (!kReleaseMode) {
+      _repository.getProductionOrders().then(
+        (value) {
+          setState(() {
+            productionOrders = value;
+            _pending = false;
+          });
+        },
+      );
+    } else {
+      setState(() {
+        productionOrders = ProductionOrdersMock.getProductionOrders();
+        _pending = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
@@ -210,10 +261,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final scafoldBody = SafeArea(
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            /*if (isLandscape)
+        child: _pending
+            ? const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  /*if (isLandscape)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -227,19 +290,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         }),
                   ],
                 ),*/
-            if (_showChart || !isLandscape)
-              SizedBox(
-                height: availableHeight * (!isLandscape ? 0.30 : 0.9),
-                child: Chart(recentTransactions: _recentTransactions),
+                  if (_showChart || !isLandscape)
+                    SizedBox(
+                      height: availableHeight * (!isLandscape ? 0.30 : 0.9),
+                      child: Chart(recentTransactions: _recentTransactions),
+                    ),
+                  if (!_showChart || !isLandscape)
+                    SizedBox(
+                      height: availableHeight * (!isLandscape ? 0.70 : 0.9),
+                      child: ProductionOrderList(productionOrders,
+                          onRevome: _removeTransaction),
+                    ),
+                ],
               ),
-            if (!_showChart || !isLandscape)
-              SizedBox(
-                height: availableHeight * (!isLandscape ? 0.70 : 0.9),
-                child: ProductionOrderList(productionOrders,
-                    onRevome: _removeTransaction),
-              ),
-          ],
-        ),
       ),
     );
 

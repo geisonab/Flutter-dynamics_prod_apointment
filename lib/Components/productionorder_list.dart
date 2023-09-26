@@ -10,7 +10,7 @@ class ProductionOrderList extends StatelessWidget {
   });
 
   final List<ProductionOrderModel> orders;
-  final void Function(String) onRevome;
+  final void Function(int) onRevome;
 
   @override
   Widget build(BuildContext context) {

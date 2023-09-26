@@ -4,52 +4,52 @@ class ProductionOrdersMock {
   static getProductionOrders() {
     return [
       ProductionOrderModel(
-          id: "OP000001",
+          id: 1,
           title: "Nome do item",
           value: 200.50,
           date: DateTime.now().subtract(const Duration(days: 3))),
       ProductionOrderModel(
-          id: "OP000002",
+          id: 2,
           title: "Nome do item2",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 4))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 3,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 4,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 5,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 6,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 7,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 8,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 9,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
       ProductionOrderModel(
-          id: "antiga",
+          id: 10,
           title: "antiga",
           value: 100,
           date: DateTime.now().subtract(const Duration(days: 33))),
